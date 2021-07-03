@@ -19,45 +19,45 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.299" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias=".38"/>
 
         <Button
             android:id="@+id/buttonAdd"
             android:layout_width="120dp"
             android:layout_height="100dp"
-            android:layout_marginBottom="47dp"
             android:text="@string/add"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonSub"
+            app:layout_constraintBaseline_toBaselineOf="@+id/buttonSub"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.791" />
+            app:layout_constraintHorizontal_bias="0.33"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/buttonSub"
             android:layout_width="120dp"
             android:layout_height="100dp"
-            android:layout_marginBottom="55dp"
             android:text="@string/sub"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonMultiply"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.304"
+            app:layout_constraintStart_toEndOf="@+id/buttonAdd"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.311" />
 
         <Button
             android:id="@+id/buttonMultiply"
             android:layout_width="120dp"
             android:layout_height="100dp"
-            android:layout_marginBottom="55dp"
             android:text="@string/multiply"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonDivide"
+            app:layout_constraintBaseline_toBaselineOf="@+id/buttonDivide"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.33"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
@@ -68,9 +68,10 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.893" />
+            app:layout_constraintHorizontal_bias="0.304"
+            app:layout_constraintStart_toEndOf="@+id/buttonMultiply"
+            app:layout_constraintTop_toBottomOf="@id/buttonSub"
+            app:layout_constraintVertical_bias="0.35" />
 
         <Button
             android:id="@+id/buttonReset"

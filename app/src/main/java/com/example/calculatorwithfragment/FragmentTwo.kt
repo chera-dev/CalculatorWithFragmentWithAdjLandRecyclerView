@@ -1,6 +1,8 @@
 package com.example.calculatorwithfragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ class FragmentTwo : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("Fragment 2","oncreateview called in fragment 2")
         // Inflate the layout for this fragment
         val inflate= inflater.inflate(R.layout.fragment_two, container, false)
         val argsFromOne = FragmentTwoArgs.fromBundle(requireArguments())
@@ -48,4 +51,54 @@ class FragmentTwo : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        Log.i("Fragment 2","onattach called in fragment 2")
+        super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i("Fragment 2","onreate called in fragment 2")
+        super.onCreate(savedInstanceState)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.i("Fragment 2","onactivitycreated called in fragment 2")
+        super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onStart() {
+        Log.i("Fragment 2","onstart called in fragment 2")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.i("Fragment 2","onResume called in fragment 2")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Log.i("Fragment 2","onPause called in fragment 2")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.i("Fragment 2","onStop called in fragment 2")
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        Log.i("Fragment 2","onDestroyView called in fragment 2")
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        Log.i("Fragment 2","onDestroy called in fragment 2")
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        Log.i("Fragment 2","onDetach called in fragment 2")
+        super.onDetach()
+    }
 }

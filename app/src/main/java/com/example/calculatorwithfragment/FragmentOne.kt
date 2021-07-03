@@ -1,7 +1,9 @@
 package com.example.calculatorwithfragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +33,7 @@ class FragmentOne : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("Fragment One","oncreateview called in fragment one")
         // Inflate the layout for this fragment
         val inflate= inflater.inflate(R.layout.fragment_one, container, false)
         buttonAdd = inflate.findViewById(R.id.buttonAdd)
@@ -49,8 +52,9 @@ class FragmentOne : Fragment() {
             onResult()
             textView.text = argsfromtwo.result
         }
-        buttonReset.setOnClickListener { onReset() }
-
+        buttonReset.setOnClickListener {
+            onReset()
+        }
         return inflate
     }
 
@@ -71,5 +75,54 @@ class FragmentOne : Fragment() {
         buttonMultiply.visibility = View.VISIBLE
         buttonDivide.visibility = View.VISIBLE
     }
+    override fun onAttach(context: Context) {
+        Log.i("Fragment One","onattach called in fragment one")
+        super.onAttach(context)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i("Fragment One","onreate called in fragment one")
+        super.onCreate(savedInstanceState)
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.i("Fragment One","onactivitycreated called in fragment one")
+        super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onStart() {
+        Log.i("Fragment One","onstart called in fragment one")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.i("Fragment One","onResume called in fragment one")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Log.i("Fragment One","onPause called in fragment one")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.i("Fragment One","onStop called in fragment one")
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        Log.i("Fragment One","onDestroyView called in fragment one")
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        Log.i("Fragment One","onDestroy called in fragment one")
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        Log.i("Fragment One","onDetach called in fragment one")
+        super.onDetach()
+    }
 }
