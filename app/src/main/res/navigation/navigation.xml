@@ -3,33 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/optionsAndResultFragment">
+    app:startDestination="@id/fragmentOne">
 
     <fragment
-        android:id="@+id/optionsAndResultFragment"
-        android:name="com.example.calculatorwithfragment.OptionsAndResultFragment"
-        android:label="fragment_options_and_result"
-        tools:layout="@layout/fragment_options_and_result" >
+        android:id="@+id/fragmentOne"
+        android:name="com.example.calculatorwithfragment.FragmentOne"
+        android:label="fragment_one"
+        tools:layout="@layout/fragment_one" >
+        <action
+            android:id="@+id/action_fragmentOne_to_fragmentTwo"
+            app:destination="@id/fragmentTwo" />
         <argument
             android:name="result"
             app:argType="string"
             app:nullable="true"
             android:defaultValue="null" />
-        <action
-            android:id="@+id/action_optionsAndResultFragment_to_valueEnteringFragment"
-            app:destination="@id/valueEnteringFragment" />
-
     </fragment>
     <fragment
-        android:id="@+id/valueEnteringFragment"
-        android:name="com.example.calculatorwithfragment.ValueEnteringFragment"
-        android:label="fragment_value_entering"
-        tools:layout="@layout/fragment_value_entering" >
-        <argument
-            android:name="operationName"
-            app:argType="string" />
+        android:id="@+id/fragmentTwo"
+        android:name="com.example.calculatorwithfragment.FragmentTwo"
+        android:label="fragment_two"
+        tools:layout="@layout/fragment_two" >
         <action
-            android:id="@+id/action_valueEnteringFragment_to_optionsAndResultFragment"
-            app:destination="@id/optionsAndResultFragment" />
+            android:id="@+id/action_fragmentTwo_to_fragmentOne"
+            app:destination="@id/fragmentOne"
+            app:popUpTo="@id/fragmentOne"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="action"
+            app:argType="string" />
     </fragment>
 </navigation>
