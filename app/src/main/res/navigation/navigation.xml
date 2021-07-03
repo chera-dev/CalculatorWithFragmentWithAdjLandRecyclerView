@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/optionsAndResultFragment">
+
+    <fragment
+        android:id="@+id/optionsAndResultFragment"
+        android:name="com.example.calculatorwithfragment.OptionsAndResultFragment"
+        android:label="fragment_options_and_result"
+        tools:layout="@layout/fragment_options_and_result" >
+        <argument
+            android:name="result"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+        <action
+            android:id="@+id/action_optionsAndResultFragment_to_valueEnteringFragment"
+            app:destination="@id/valueEnteringFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/valueEnteringFragment"
+        android:name="com.example.calculatorwithfragment.ValueEnteringFragment"
+        android:label="fragment_value_entering"
+        tools:layout="@layout/fragment_value_entering" >
+        <argument
+            android:name="operationName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_valueEnteringFragment_to_optionsAndResultFragment"
+            app:destination="@id/optionsAndResultFragment" />
+    </fragment>
+</navigation>
