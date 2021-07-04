@@ -1,25 +1,16 @@
 package com.example.calculatorwithfragment
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import androidx.navigation.Navigation
+import androidx.fragment.app.clearFragmentResult
+import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.setFragmentResultListener
 
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.fragment_one.*
-
-//import com.example.demo2.databinding.FragmentOne
-//import com.example.android.navigation.databinding.FragmentGameBinding
 
 class FragmentOne : Fragment() {
     private lateinit var buttonAdd: Button
@@ -33,8 +24,6 @@ class FragmentOne : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i("Fragment One","oncreateview called in fragment one")
-        // Inflate the layout for this fragment
         val inflate= inflater.inflate(R.layout.fragment_one, container, false)
         buttonAdd = inflate.findViewById(R.id.buttonAdd)
         buttonSub = inflate.findViewById(R.id.buttonSub)
@@ -42,23 +31,41 @@ class FragmentOne : Fragment() {
         buttonDivide = inflate.findViewById(R.id.buttonDivide)
         textView = inflate.findViewById(R.id.textViewresult)
         buttonReset = inflate.findViewById(R.id.buttonReset)
-        buttonAdd.setOnClickListener { Navigation.findNavController(it).navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(buttonAdd.text.toString())) }
-        buttonSub.setOnClickListener { Navigation.findNavController(it).navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(buttonSub.text.toString())) }
-        buttonMultiply.setOnClickListener { Navigation.findNavController(it).navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(buttonMultiply.text.toString())) }
-        buttonDivide.setOnClickListener { Navigation.findNavController(it).navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(buttonDivide.text.toString())) }
-
-        val argsfromtwo = FragmentOneArgs.fromBundle(requireArguments())
-        if(argsfromtwo.result!="null"){
-            onResult()
-            textView.text = argsfromtwo.result
-        }
+        buttonAdd.setOnClickListener { navigateToFragmentTwo(buttonAdd.text.toString())}
+        buttonSub.setOnClickListener { navigateToFragmentTwo(buttonSub.text.toString())}
+        buttonMultiply.setOnClickListener { navigateToFragmentTwo(buttonMultiply.text.toString()) }
+        buttonDivide.setOnClickListener { navigateToFragmentTwo(buttonDivide.text.toString()) }
         buttonReset.setOnClickListener {
+            clearFragmentResult(MY_REQUEST_KEY)
+            MainActivity.operationResult = null
             onReset()
+        }
+        if(MainActivity.state == 0)
+            onReset()
+        else {
+            textView.text = MainActivity.operationResult
+            onResult()
         }
         return inflate
     }
 
+    private fun navigateToFragmentTwo(operationName:String){
+        findNavController().navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(operationName))
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener(MY_REQUEST_KEY){ _, result ->
+            result.getString(MY_STRING_KEY)?.let { stringMine ->
+                textView.text = stringMine
+                MainActivity.operationResult = stringMine
+                onResult()
+            }
+        }
+    }
+
     private fun onResult(){
+        MainActivity.state = 1
         textView.visibility = View.VISIBLE
         buttonReset.visibility = View.VISIBLE
         buttonAdd.visibility = View.GONE
@@ -68,6 +75,7 @@ class FragmentOne : Fragment() {
     }
 
     private fun onReset(){
+        MainActivity.state = 0
         textView.visibility = View.GONE
         buttonReset.visibility = View.GONE
         buttonAdd.visibility = View.VISIBLE
@@ -75,54 +83,10 @@ class FragmentOne : Fragment() {
         buttonMultiply.visibility = View.VISIBLE
         buttonDivide.visibility = View.VISIBLE
     }
-    override fun onAttach(context: Context) {
-        Log.i("Fragment One","onattach called in fragment one")
-        super.onAttach(context)
+
+    companion object{
+        const val MY_REQUEST_KEY = "myRequestKey"
+        const val MY_STRING_KEY = "myStringKey"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("Fragment One","onreate called in fragment one")
-        super.onCreate(savedInstanceState)
-    }
-
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        Log.i("Fragment One","onactivitycreated called in fragment one")
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onStart() {
-        Log.i("Fragment One","onstart called in fragment one")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.i("Fragment One","onResume called in fragment one")
-        super.onResume()
-    }
-
-    override fun onPause() {
-        Log.i("Fragment One","onPause called in fragment one")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.i("Fragment One","onStop called in fragment one")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.i("Fragment One","onDestroyView called in fragment one")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.i("Fragment One","onDestroy called in fragment one")
-        super.onDestroy()
-    }
-
-    override fun onDetach() {
-        Log.i("Fragment One","onDetach called in fragment one")
-        super.onDetach()
-    }
 }

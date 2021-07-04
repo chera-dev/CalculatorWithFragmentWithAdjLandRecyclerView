@@ -24,11 +24,6 @@
         android:name="com.example.calculatorwithfragment.FragmentTwo"
         android:label="fragment_two"
         tools:layout="@layout/fragment_two" >
-        <action
-            android:id="@+id/action_fragmentTwo_to_fragmentOne"
-            app:destination="@id/fragmentOne"
-            app:popUpTo="@id/fragmentOne"
-            app:popUpToInclusive="true" />
         <argument
             android:name="action"
             app:argType="string" />
