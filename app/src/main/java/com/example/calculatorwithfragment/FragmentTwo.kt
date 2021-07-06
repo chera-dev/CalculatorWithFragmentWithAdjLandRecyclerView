@@ -13,7 +13,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 
 class FragmentTwo : Fragment() {
-    private lateinit var result:String
+    private lateinit var result: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,19 +28,19 @@ class FragmentTwo : Fragment() {
         buttonResult.setOnClickListener {
             val actionResult = operation(num1.text.toString().toDoubleOrNull(), num2.text.toString().toDoubleOrNull(),argsFromOne.action)
             result = "Action :  ${argsFromOne.action}\nInput1 :  ${num1.text}\nInput2 :  ${num2.text}\nResult :  $actionResult"
-            if (actionResult!=null)
+            if (actionResult != null)
                 navigateToPreviousFragment()
         }
         return inflate
     }
 
-    private fun operation(num1: Double?, num2: Double?, action : String):Double?{
+    private fun operation(num1: Double?, num2: Double?, action : String): Double?{
         return if(num1 != null && num2 != null){
             when(action){
-                "ADDITION" -> num1+num2
-                "SUB" -> num1-num2
-                "MULTIPLY" -> num1*num2
-                else -> num1/num2
+                "ADDITION" -> num1 + num2
+                "SUB" -> num1 - num2
+                "MULTIPLY" -> num1 * num2
+                else -> num1 / num2
             }
         }
         else{

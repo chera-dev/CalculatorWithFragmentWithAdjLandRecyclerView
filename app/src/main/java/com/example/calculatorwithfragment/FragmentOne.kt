@@ -19,6 +19,8 @@ class FragmentOne : Fragment() {
     private lateinit var buttonDivide: Button
     private lateinit var textView: TextView
     private lateinit var buttonReset: Button
+    private var state = 0
+    private var operationResult:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,25 +33,35 @@ class FragmentOne : Fragment() {
         buttonDivide = inflate.findViewById(R.id.buttonDivide)
         textView = inflate.findViewById(R.id.textViewresult)
         buttonReset = inflate.findViewById(R.id.buttonReset)
+        if (savedInstanceState != null) {
+            state = savedInstanceState.getInt("state")
+            operationResult = savedInstanceState.getString("operationResult")
+        }
         buttonAdd.setOnClickListener { navigateToFragmentTwo(buttonAdd.text.toString())}
         buttonSub.setOnClickListener { navigateToFragmentTwo(buttonSub.text.toString())}
         buttonMultiply.setOnClickListener { navigateToFragmentTwo(buttonMultiply.text.toString()) }
         buttonDivide.setOnClickListener { navigateToFragmentTwo(buttonDivide.text.toString()) }
         buttonReset.setOnClickListener {
             clearFragmentResult(MY_REQUEST_KEY)
-            MainActivity.operationResult = null
+            operationResult = null
             onReset()
         }
-        if(MainActivity.state == 0)
+        if(state == 0)
             onReset()
         else {
-            textView.text = MainActivity.operationResult
+            textView.text = operationResult
             onResult()
         }
         return inflate
     }
 
-    private fun navigateToFragmentTwo(operationName:String){
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("state", state)
+        outState.putString("operationResult", operationResult)
+    }
+
+    private fun navigateToFragmentTwo(operationName: String){
         findNavController().navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(operationName))
     }
 
@@ -58,14 +70,14 @@ class FragmentOne : Fragment() {
         setFragmentResultListener(MY_REQUEST_KEY){ _, result ->
             result.getString(MY_STRING_KEY)?.let { stringMine ->
                 textView.text = stringMine
-                MainActivity.operationResult = stringMine
+                operationResult = stringMine
                 onResult()
             }
         }
     }
 
     private fun onResult(){
-        MainActivity.state = 1
+        state = 1
         textView.visibility = View.VISIBLE
         buttonReset.visibility = View.VISIBLE
         buttonAdd.visibility = View.GONE
@@ -75,7 +87,7 @@ class FragmentOne : Fragment() {
     }
 
     private fun onReset(){
-        MainActivity.state = 0
+        state = 0
         textView.visibility = View.GONE
         buttonReset.visibility = View.GONE
         buttonAdd.visibility = View.VISIBLE
