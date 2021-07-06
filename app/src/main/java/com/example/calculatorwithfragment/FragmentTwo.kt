@@ -10,28 +10,36 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
 
 class FragmentTwo : Fragment() {
     private lateinit var result: String
+    private lateinit var operationName:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val inflate= inflater.inflate(R.layout.fragment_two, container, false)
-        val argsFromOne = FragmentTwoArgs.fromBundle(requireArguments())
         val buttonResult:Button = inflate.findViewById(R.id.buttonResult)
         val num1:EditText = inflate.findViewById(R.id.editTextNumber)
         val num2:EditText = inflate.findViewById(R.id.editTextNumber2)
-        buttonResult.text=argsFromOne.action
+        if(savedInstanceState!=null){
+            operationName = savedInstanceState.getString("operationName").toString()
+        }
+        operationName = getArguments()?.getString("operationName").toString()
+        buttonResult.text= operationName
         buttonResult.setOnClickListener {
-            val actionResult = operation(num1.text.toString().toDoubleOrNull(), num2.text.toString().toDoubleOrNull(),argsFromOne.action)
-            result = "Action :  ${argsFromOne.action}\nInput1 :  ${num1.text}\nInput2 :  ${num2.text}\nResult :  $actionResult"
+            val actionResult = operation(num1.text.toString().toDoubleOrNull(), num2.text.toString().toDoubleOrNull(),buttonResult.text.toString())
+            result = "Action :  ${buttonResult.text}\nInput1 :  ${num1.text}\nInput2 :  ${num2.text}\nResult :  $actionResult"
             if (actionResult != null)
                 navigateToPreviousFragment()
         }
         return inflate
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("operationName",operationName)
     }
 
     private fun operation(num1: Double?, num2: Double?, action : String): Double?{
@@ -53,6 +61,7 @@ class FragmentTwo : Fragment() {
         setFragmentResult(
                 FragmentOne.MY_REQUEST_KEY, bundleOf(FragmentOne.MY_STRING_KEY to result)
         )
-        findNavController().popBackStack()
+        fragmentManager?.popBackStackImmediate()
+        //fragmentManager?.popBackStack()
     }
 }

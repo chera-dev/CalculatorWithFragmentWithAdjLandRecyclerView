@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.clearFragmentResult
-import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.setFragmentResultListener
 
 
@@ -19,24 +18,25 @@ class FragmentOne : Fragment() {
     private lateinit var buttonDivide: Button
     private lateinit var textView: TextView
     private lateinit var buttonReset: Button
-    private var state = 0
-    private var operationResult:String? = null
+    private var operationResult : String? = null
+    private var stateOfFragmentOne : Int = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val inflate= inflater.inflate(R.layout.fragment_one, container, false)
+        if (savedInstanceState != null) {
+            stateOfFragmentOne = savedInstanceState.getInt("stateOfFragmentOne")
+            operationResult = savedInstanceState.getString("operationResult")
+        }
         buttonAdd = inflate.findViewById(R.id.buttonAdd)
         buttonSub = inflate.findViewById(R.id.buttonSub)
         buttonMultiply = inflate.findViewById(R.id.buttonMultiply)
         buttonDivide = inflate.findViewById(R.id.buttonDivide)
         textView = inflate.findViewById(R.id.textViewresult)
         buttonReset = inflate.findViewById(R.id.buttonReset)
-        if (savedInstanceState != null) {
-            state = savedInstanceState.getInt("state")
-            operationResult = savedInstanceState.getString("operationResult")
-        }
         buttonAdd.setOnClickListener { navigateToFragmentTwo(buttonAdd.text.toString())}
         buttonSub.setOnClickListener { navigateToFragmentTwo(buttonSub.text.toString())}
         buttonMultiply.setOnClickListener { navigateToFragmentTwo(buttonMultiply.text.toString()) }
@@ -46,7 +46,7 @@ class FragmentOne : Fragment() {
             operationResult = null
             onReset()
         }
-        if(state == 0)
+        if(stateOfFragmentOne == 0)
             onReset()
         else {
             textView.text = operationResult
@@ -57,12 +57,19 @@ class FragmentOne : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("state", state)
+        outState.putInt("stateOfFragmentOne", stateOfFragmentOne)
         outState.putString("operationResult", operationResult)
     }
 
     private fun navigateToFragmentTwo(operationName: String){
-        findNavController().navigate(FragmentOneDirections.actionFragmentOneToFragmentTwo(operationName))
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        val fragmentTwo = FragmentTwo()
+        val args = Bundle()
+        args.putString("operationName",operationName)
+        fragmentTwo.setArguments(args)
+        transaction.replace(R.id.my_fragmentholder,fragmentTwo)
+        transaction.addToBackStack(FragmentOne.toString())
+        transaction.commit()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +84,7 @@ class FragmentOne : Fragment() {
     }
 
     private fun onResult(){
-        state = 1
+        stateOfFragmentOne = 1
         textView.visibility = View.VISIBLE
         buttonReset.visibility = View.VISIBLE
         buttonAdd.visibility = View.GONE
@@ -87,7 +94,7 @@ class FragmentOne : Fragment() {
     }
 
     private fun onReset(){
-        state = 0
+        stateOfFragmentOne = 0
         textView.visibility = View.GONE
         buttonReset.visibility = View.GONE
         buttonAdd.visibility = View.VISIBLE
