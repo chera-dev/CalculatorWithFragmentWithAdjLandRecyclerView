@@ -39,29 +39,31 @@ class FragmentTwo : Fragment() {
 ////////////////////////////////////
         if (savedInstanceState != null){
             Log.e("aaaaaaa","f2 saved")
-            mode = savedInstanceState.getInt("mode")
-            val fragmentTwo = FragmentTwo()
-            val bundle = savedInstanceState
-            bundle.putString("num1", savedInstanceState.getString("num1"))
-            bundle.putString("num2", savedInstanceState.getString("num2"))
-            fragmentTwo.arguments = bundle
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Log.e("f2","f2 landscape after saved")
-                fragmentManager?.popBackStack()
-                transaction.replace(R.id.my_fragmentholder2, fragmentTwo)
-                //transaction.replace(R.id.my_fragmentholder, FragmentOne(),"dummyFragment")
+            val fm = activity?.supportFragmentManager
+            val fragmentTwox = fm?.findFragmentByTag("fragmentTwo")
+            if (fragmentTwox != null) {
+                fm.popBackStack()
+                val transaction1 = fm.beginTransaction()
+                transaction1.remove(fragmentTwox).commit()
+                Log.e("cccccccccc","got fragmentTwo")
+                val fragmentTwo = FragmentTwo()
+                val bundle = fragmentTwox.arguments
+                bundle?.putString("num1", savedInstanceState.getString("num1"))
+                bundle?.putString("num2", savedInstanceState.getString("num2"))
+                fragmentTwo.arguments = bundle
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    Log.e("ccccccc","f2 landscape after saved")
+                    transaction.replace(R.id.my_fragmentholder2, fragmentTwo, "fragmentTwo")
+                    transaction.addToBackStack("fragmentTwo")
+                }
+                else if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    Log.e("f2","f2 portrait after saved")
+                    transaction.replace(R.id.my_fragmentholder,fragmentTwo, "fragmentTwo")
+                    transaction.addToBackStack("fragmentTwo")
+                }
+                transaction.commit()
             }
-            else if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Log.e("f2","f2 portrait after saved")
-                //fragmentManager?.popBackStack()
-                //transaction.replace(R.id.my_fragmentholder, FragmentOne())
-                //transaction.addToBackStack(FragmentOne.toString())
-                fragmentManager?.popBackStack()
-                transaction.replace(R.id.my_fragmentholder,fragmentTwo)
-                transaction.addToBackStack("fragmentTwo")
-            }
-            transaction.commit()
         }
         else
             Log.e("zzzzzzzzzzz","f2 not saved")
@@ -114,10 +116,7 @@ class FragmentTwo : Fragment() {
         setFragmentResult(
                 FragmentOne.MY_REQUEST_KEY, bundleOf(FragmentOne.MY_STRING_KEY to result)
         )
-        /*if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            fragmentManager?.popBackStack()*/
         fragmentManager?.popBackStackImmediate()
-        //fragmentManager?.popBackStack()
     }
     override fun onDestroy() {
         super.onDestroy()

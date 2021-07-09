@@ -18,22 +18,10 @@ class MainActivity : AppCompatActivity() {
             val fragmentOne = FragmentOne()
             val transaction = supportFragmentManager.beginTransaction()
             transaction.add(R.id.my_fragmentholder, fragmentOne)
-            /*if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Log.e("main","main not saved in landscape")
-                val fragmentTwo = FragmentTwo()
-                transaction.replace(R.id.my_fragmentholder2, fragmentTwo)
-            }*/
             transaction.commit()
         }
         else
             Log.e("aaaaaaaaa","main saved")
-        /*if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            val fragmentTwo = FragmentTwo()
-            Toast.makeText(this, "landscape mode in main", Toast.LENGTH_SHORT).show()
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.my_fragmentholder2, fragmentTwo)
-            transaction.commit()
-        }*/
     }
 
     override fun onDestroy() {

@@ -1,7 +1,6 @@
 package com.example.calculatorwithfragment
 
 import android.content.res.Configuration
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,15 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.fragment.app.clearFragmentResult
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 
 
 class FragmentOne : Fragment() {
@@ -44,18 +37,6 @@ class FragmentOne : Fragment() {
             mode = 0
         if (savedInstanceState != null) {
             Log.e("aaaaaaaa","f1 saved")
-            /*val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Log.e("f1","f1 after instance saved landscape")
-                transaction.replace(R.id.my_fragmentholder2, FragmentTwo())
-            }
-            else if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                Log.e("f1","f1 after instance saved portrait")
-                val fragmentOne = FragmentOne()
-                fragmentOne.arguments = savedInstanceState
-                transaction.replace(R.id.my_fragmentholder,fragmentOne)
-            }
-            transaction.commit()*/
             stateOfFragmentOne = savedInstanceState.getInt("stateOfFragmentOne")
             operationResult = savedInstanceState.getString("operationResult")
         }
@@ -103,14 +84,12 @@ class FragmentOne : Fragment() {
         fragmentTwo.setArguments(args)
         if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Log.e("f1","f1 navigate to f2 in landscape")
-            Toast.makeText(activity, "landscape mode in f1", Toast.LENGTH_LONG).show()
-            transaction.replace(R.id.my_fragmentholder2, fragmentTwo)
+            transaction.replace(R.id.my_fragmentholder2, fragmentTwo, "fragmentTwo")
             transaction.addToBackStack(FragmentOne.toString())
         }
         else if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             Log.e("f1","f1 navigate to f2 in portrait")
-            Toast.makeText(activity, "portrait mode in f1", Toast.LENGTH_LONG).show()
-            transaction.replace(R.id.my_fragmentholder,fragmentTwo)
+            transaction.replace(R.id.my_fragmentholder,fragmentTwo, "fragmentTwo")
             transaction.addToBackStack(FragmentOne.toString())
         }
         transaction.commit()
