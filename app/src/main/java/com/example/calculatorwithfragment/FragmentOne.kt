@@ -2,7 +2,6 @@ package com.example.calculatorwithfragment
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,28 +19,18 @@ class FragmentOne : Fragment() {
     private lateinit var buttonDivide: Button
     private lateinit var textView: TextView
     private lateinit var buttonReset: Button
-    private var operationResult : String? = null
-    private var stateOfFragmentOne : Int = 0
-    private var mode:Int? = null
-
+    private var operationResult: String? = null
+    private var stateOfFragmentOne: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.e("f1","f1 root")
-        val inflate= inflater.inflate(R.layout.fragment_one, container, false)
-        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            mode = 1
-        else if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-            mode = 0
+        val inflate = inflater.inflate(R.layout.fragment_one, container, false)
         if (savedInstanceState != null) {
-            Log.e("aaaaaaaa","f1 saved")
             stateOfFragmentOne = savedInstanceState.getInt("stateOfFragmentOne")
             operationResult = savedInstanceState.getString("operationResult")
         }
-        else
-            Log.e("zzzzzzzzzzz","f1 not saved")
         buttonAdd = inflate.findViewById(R.id.buttonAdd)
         buttonSub = inflate.findViewById(R.id.buttonSub)
         buttonMultiply = inflate.findViewById(R.id.buttonMultiply)
@@ -68,27 +57,22 @@ class FragmentOne : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        Log.e("f1","f1 fun onsave")
         super.onSaveInstanceState(outState)
         outState.putInt("stateOfFragmentOne", stateOfFragmentOne)
         outState.putString("operationResult", operationResult)
-        outState.putInt("mode", mode!!)
     }
-//////////////////////////////
+
     private fun navigateToFragmentTwo(operationName: String){
-        Log.e("f1","f1 function navigate to f2")
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         val fragmentTwo = FragmentTwo()
         val args = Bundle()
         args.putString("operationName",operationName)
-        fragmentTwo.setArguments(args)
+        fragmentTwo.arguments = args
         if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.e("f1","f1 navigate to f2 in landscape")
             transaction.replace(R.id.my_fragmentholder2, fragmentTwo, "fragmentTwo")
             transaction.addToBackStack(FragmentOne.toString())
         }
         else if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Log.e("f1","f1 navigate to f2 in portrait")
             transaction.replace(R.id.my_fragmentholder,fragmentTwo, "fragmentTwo")
             transaction.addToBackStack(FragmentOne.toString())
         }
@@ -101,14 +85,12 @@ class FragmentOne : Fragment() {
             result.getString(MY_STRING_KEY)?.let { stringMine ->
                 textView.text = stringMine
                 operationResult = stringMine
-                Log.e("f1","f1 after we get result")
                 onResult()
             }
         }
     }
 
     private fun onResult(){
-        Log.e("f1","f1 in result function")
         stateOfFragmentOne = 1
         textView.visibility = View.VISIBLE
         buttonReset.visibility = View.VISIBLE
@@ -119,7 +101,6 @@ class FragmentOne : Fragment() {
     }
 
     private fun onReset(){
-        Log.e("f1","f1 in reset function")
         stateOfFragmentOne = 0
         textView.visibility = View.GONE
         buttonReset.visibility = View.GONE
@@ -134,8 +115,4 @@ class FragmentOne : Fragment() {
         const val MY_STRING_KEY = "myStringKey"
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.e("qqqqqqqqq","f1 destroyed")
-    }
 }
