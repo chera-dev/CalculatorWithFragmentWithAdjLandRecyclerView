@@ -16,13 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 
 class FragmentOne : Fragment(), ItemActionListener {
 
-    private lateinit var textView: TextView
-    private lateinit var buttonReset: Button
     private var operationResult: String? = null
     private var stateOfFragmentOne: Int = 0
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ButtonAdapter
+
+    private var buttonName = arrayOf(Data(1,"ADDITION"), Data(1,"SUB"), Data(1,"MULTIPLY"), Data(1,"DIVIDE"))
+    private var resultValue = arrayOf(Data(2,""),Data(1,"RESET"))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,24 +33,15 @@ class FragmentOne : Fragment(), ItemActionListener {
 
         recyclerView = inflate.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-        adapter = ButtonAdapter(requireContext(),this)
-        recyclerView.adapter = adapter
 
         if (savedInstanceState != null) {
             stateOfFragmentOne = savedInstanceState.getInt("stateOfFragmentOne")
             operationResult = savedInstanceState.getString("operationResult")
         }
-        textView = inflate.findViewById(R.id.textView2)
-        buttonReset = inflate.findViewById(R.id.resetButton)
-        buttonReset.setOnClickListener {
-            clearFragmentResult(MY_REQUEST_KEY)
-            operationResult = null
-            onReset()
-        }
         if(stateOfFragmentOne == 0)
             onReset()
         else {
-            textView.text = operationResult
+            resultValue[0].data = operationResult.toString()
             onResult()
         }
         return inflate
@@ -62,7 +54,13 @@ class FragmentOne : Fragment(), ItemActionListener {
     }
 
     override fun onItemClicked(action: String) {
-        navigateToFragmentTwo(action)
+        if (action != "RESET")
+            navigateToFragmentTwo(action)
+        else {
+            clearFragmentResult(MY_REQUEST_KEY)
+            operationResult = null
+            onReset()
+        }
     }
 
     private fun navigateToFragmentTwo(operationName: String){
@@ -86,7 +84,7 @@ class FragmentOne : Fragment(), ItemActionListener {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(MY_REQUEST_KEY){ _, result ->
             result.getString(MY_STRING_KEY)?.let { stringMine ->
-                textView.text = stringMine
+                resultValue[0].data = stringMine
                 operationResult = stringMine
                 onResult()
             }
@@ -95,16 +93,14 @@ class FragmentOne : Fragment(), ItemActionListener {
 
     private fun onResult(){
         stateOfFragmentOne = 1
-        textView.visibility = View.VISIBLE
-        buttonReset.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
+        adapter = ButtonAdapter(requireContext(),this,resultValue)
+        recyclerView.adapter = adapter
     }
 
     private fun onReset(){
         stateOfFragmentOne = 0
-        textView.visibility = View.GONE
-        buttonReset.visibility = View.GONE
-        recyclerView.visibility = View.VISIBLE
+        adapter = ButtonAdapter(requireContext(),this,buttonName)
+        recyclerView.adapter = adapter
     }
 
     companion object{
