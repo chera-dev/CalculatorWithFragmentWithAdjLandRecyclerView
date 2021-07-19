@@ -8,8 +8,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ButtonAdapter(private val parentContext: Context, private val actionListener: ItemActionListener, private val list: Array<Data>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ButtonAdapter(private val parentContext: Context, private val actionListener: ItemActionListener, private var list: Array<Data>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    fun changeListData(newData: Array<Data>){
+        list = newData
+        this.notifyDataSetChanged()
+    }
 
     inner class ButtonHolder(view: View): RecyclerView.ViewHolder(view) {
         var itemButton: Button
@@ -20,6 +24,7 @@ class ButtonAdapter(private val parentContext: Context, private val actionListen
             }
         }
     }
+
     inner class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var itemTextView: TextView
         init {

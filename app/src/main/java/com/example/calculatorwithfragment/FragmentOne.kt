@@ -34,6 +34,9 @@ class FragmentOne : Fragment(), ItemActionListener {
         recyclerView = inflate.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
 
+        adapter = ButtonAdapter(requireContext(),this,resultValue)
+        recyclerView.adapter = adapter
+
         if (savedInstanceState != null) {
             stateOfFragmentOne = savedInstanceState.getInt("stateOfFragmentOne")
             operationResult = savedInstanceState.getString("operationResult")
@@ -93,14 +96,12 @@ class FragmentOne : Fragment(), ItemActionListener {
 
     private fun onResult(){
         stateOfFragmentOne = 1
-        adapter = ButtonAdapter(requireContext(),this,resultValue)
-        recyclerView.adapter = adapter
+        adapter.changeListData(resultValue)
     }
 
     private fun onReset(){
         stateOfFragmentOne = 0
-        adapter = ButtonAdapter(requireContext(),this,buttonName)
-        recyclerView.adapter = adapter
+        adapter.changeListData(buttonName)
     }
 
     companion object{
