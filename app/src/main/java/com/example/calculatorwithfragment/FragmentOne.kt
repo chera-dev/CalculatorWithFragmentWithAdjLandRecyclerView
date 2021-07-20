@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.clearFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,19 +20,14 @@ class FragmentOne : Fragment(), ItemActionListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ButtonAdapter
 
-    private var buttonName = arrayOf<Data>()
-    private var resultValue = arrayOf(Data("",2),Data("RESET",1))
+    private var buttonName = arrayOf<Any>(OPERATION.ADDITION,OPERATION.SUB,OPERATION.MULTIPLY,OPERATION.DIVIDE)
+    private var resultValue = arrayOf<Any>("",OPERATION.RESET)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val inflate = inflater.inflate(R.layout.fragment_one, container, false)
-
-        val operationName = mutableListOf<Data>()
-        for (i in OPERATION.values())
-            operationName.add(Data(i.name,i.viewType))
-        buttonName = operationName.toTypedArray()
 
         recyclerView = inflate.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
@@ -46,10 +39,11 @@ class FragmentOne : Fragment(), ItemActionListener {
             stateOfFragmentOne = savedInstanceState.getInt("stateOfFragmentOne")
             operationResult = savedInstanceState.getString("operationResult")
         }
+
         if(stateOfFragmentOne == 0)
             onReset()
         else {
-            resultValue[0].data = operationResult.toString()
+            resultValue[0]= operationResult.toString()
             onResult()
         }
         return inflate
@@ -92,7 +86,7 @@ class FragmentOne : Fragment(), ItemActionListener {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(MY_REQUEST_KEY){ _, result ->
             result.getString(MY_STRING_KEY)?.let { stringMine ->
-                resultValue[0].data = stringMine
+                resultValue[0] = stringMine
                 operationResult = stringMine
                 onResult()
             }

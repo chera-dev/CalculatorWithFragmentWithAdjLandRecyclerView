@@ -1,8 +1,9 @@
 package com.example.calculatorwithfragment
 
-enum class OPERATION(val viewType: Int = 1){
+enum class OPERATION{
     ADDITION,
     SUB,
     MULTIPLY,
-    DIVIDE
+    DIVIDE,
+    RESET
 }

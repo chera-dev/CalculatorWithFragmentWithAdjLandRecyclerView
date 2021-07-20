@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ButtonAdapter(private val parentContext: Context, private val actionListener: ItemActionListener,
-                    private var list: Array<Data>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                    private var list: Array<Any>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    fun changeListData(newData: Array<Data>){
+    fun changeListData(newData: Array<Any>){
         list = newData
         this.notifyDataSetChanged()
     }
@@ -21,7 +21,7 @@ class ButtonAdapter(private val parentContext: Context, private val actionListen
         init {
             itemButton = view.findViewById(R.id.buttonItem)
             itemButton.setOnClickListener {
-                actionListener.onItemClicked(list[position].data)
+                actionListener.onItemClicked(list[position].toString())
             }
         }
     }
@@ -52,15 +52,15 @@ class ButtonAdapter(private val parentContext: Context, private val actionListen
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (list[position].viewType == VIEW_TYPE_ONE) {
-            (holder as ButtonHolder).itemButton.text = list[position].data
+        if (list[position] is OPERATION) {
+            (holder as ButtonHolder).itemButton.text = list[position].toString()
         }
         else{
-            (holder as TextViewHolder).itemTextView.text = list[position].data
+            (holder as TextViewHolder).itemTextView.text = list[position].toString()
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return list[position].viewType
+        return if (list[position] is OPERATION) 1 else 2
     }
 }
