@@ -1,3 +1,3 @@
 package com.example.calculatorwithfragment
 
-data class Data(val viewType: Int, var data: String)
+data class Data(var data: String, val viewType: Int)

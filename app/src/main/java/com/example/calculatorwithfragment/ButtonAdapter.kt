@@ -8,7 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ButtonAdapter(private val parentContext: Context, private val actionListener: ItemActionListener, private var list: Array<Data>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ButtonAdapter(private val parentContext: Context, private val actionListener: ItemActionListener,
+                    private var list: Array<Data>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun changeListData(newData: Array<Data>){
         list = newData
@@ -34,9 +35,11 @@ class ButtonAdapter(private val parentContext: Context, private val actionListen
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(viewType == VIEW_TYPE_ONE)
-            ButtonHolder(LayoutInflater.from(parentContext).inflate(R.layout.button_view, parent, false))
+            ButtonHolder(LayoutInflater.from(parentContext).inflate(R.layout.button_view,
+                parent, false))
         else
-            TextViewHolder(LayoutInflater.from(parentContext).inflate(R.layout.text_view, parent, false))
+            TextViewHolder(LayoutInflater.from(parentContext).inflate(R.layout.text_view,
+                parent, false))
     }
 
     override fun getItemCount(): Int {

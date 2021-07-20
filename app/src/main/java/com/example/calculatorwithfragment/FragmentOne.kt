@@ -22,14 +22,19 @@ class FragmentOne : Fragment(), ItemActionListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ButtonAdapter
 
-    private var buttonName = arrayOf(Data(1,"ADDITION"), Data(1,"SUB"), Data(1,"MULTIPLY"), Data(1,"DIVIDE"))
-    private var resultValue = arrayOf(Data(2,""),Data(1,"RESET"))
+    private var buttonName = arrayOf<Data>()
+    private var resultValue = arrayOf(Data("",2),Data("RESET",1))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val inflate = inflater.inflate(R.layout.fragment_one, container, false)
+
+        val operationName = mutableListOf<Data>()
+        for (i in OPERATION.values())
+            operationName.add(Data(i.name,i.viewType))
+        buttonName = operationName.toTypedArray()
 
         recyclerView = inflate.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
